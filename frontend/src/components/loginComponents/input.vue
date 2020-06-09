@@ -26,26 +26,29 @@
           :type="showPassword ? 'text' : 'password'"
           @click:append="showPassword = !showPassword"
           :error-messages="error.password"/>
+        <v-row v-if="isErrorLogin">
+          <h3 class="red--text mx-auto">{{ $t('rules.errorLogin') }}</h3>
+        </v-row>
       </v-card-text>
       <v-card-actions>
         <v-btn block class="primary" @click="submit">{{ $t('login.login') }}</v-btn>
       </v-card-actions>
       <v-row class="px-5">
-        <router-link class="black--text" to="/register">{{ $t('login.register') }}</router-link>
-        <!-- <a class="black--text" href="/register">{{ $t('login.register') }}</a> -->
+        <router-link class="black--text" :to="{name: 'register'}">{{ $t('login.register') }}</router-link>
         <v-spacer></v-spacer>
-        <router-link class="black--text" to="/register">{{ $t('login.forgetpassword') }}</router-link>
+        <router-link class="black--text" :to="{name: 'register'}">{{ $t('login.forgetpassword') }}</router-link>
       </v-row>
     </v-card>
   </v-form>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   name: 'InputComponent',
   data () {
     return {
-      // isFormValid: false,
+      isErrorLogin: false,
       showPassword: false,
       username: '',
       password: '',
@@ -57,30 +60,67 @@ export default {
         duration: 200,
         offset: 50,
         easing: 'easeInOutCubic'
+      },
+      msg: []
+    }
+  },
+  watch: {
+    getLanguage () {
+      if (this.error.username !== '') {
+        this.error.username = this.ruleUsername
       }
+      if (this.error.password !== '') {
+        this.error.password = this.rulePassword
+      }
+    }
+  },
+  computed: {
+    ...mapGetters({
+      getLanguage: 'language/getLanguage'
+    }),
+    ruleUsername () {
+      return this.$t('rules.enterUsername')
+    },
+    rulePassword () {
+      return this.$t('rules.enterPassword')
     }
   },
   methods: {
     submit () {
+      this.clearError()
       if (this.username === '') {
-        console.log('as')
-        this.error.username = 'Enter your username'
+        this.error.username = this.ruleUsername
         this.$vuetify.goTo('#usr', this.scrollOption)
       } else if (this.password === '') {
-        this.error.password = 'Enter your password'
+        this.error.password = this.$t('rules.enterPassword')
         this.$vuetify.goTo('#pass', this.scrollOption)
       } else {
-        this.$axios.get('/user/-1')
+        const user = {
+          username: this.username,
+          password: this.password
+        }
+        this.$axios.post('/user/login', user)
           .then(res => {
-            console.log(res)
+            if (res.data.status) {
+              console.log(res.data)
+            } else {
+              this.isErrorLogin = true
+              this.clearInput()
+            }
           })
           .catch(err => {
             console.log(err)
           })
       }
     },
-    typeInput () {
-      console.log(this.username)
+    clearInput () {
+      this.username = ''
+      this.password = ''
+    },
+    clearError () {
+      this.isErrorLogin = false
+      this.error.username = ''
+      this.error.password = ''
     }
   }
 }

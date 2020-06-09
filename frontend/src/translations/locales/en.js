@@ -6,6 +6,9 @@ export default {
     thai: 'ไทย'
   },
   rules: {
+    errorLogin: 'Username or password incorrect',
+    enterUsername: 'Enter your username',
+    enterPassword: 'Enter your password',
     require: 'Require',
     space: 'No sapce are allow',
     passwordmatch: 'Password and Confirm password not match'

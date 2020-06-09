@@ -62,7 +62,8 @@ export default {
     getLanguage: {
       handler () {
         console.log(this.getLanguage)
-        this.validate()
+        // this.vm.$forceUpdate()
+        // this.validate()
       },
       deep: true
     }
@@ -90,13 +91,6 @@ export default {
         const credential = this.form
         const result = await userService.register(credential)
         console.log(result)
-        // this.$axios.post('/user/', this.form)
-        //   .then(res => {
-        //     console.log(res)
-        //   })
-        //   .catch(err => {
-        //     console.log(err)
-        //   })
       } else {
         this.validate()
       }
@@ -111,7 +105,7 @@ export default {
       this.$refs.form.resetValidation()
     },
     goBack () {
-      this.$router.push('/')
+      this.$router.push({ name: 'login' })
     },
     async getData () {
       console.log(this.getLanguage)

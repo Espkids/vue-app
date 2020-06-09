@@ -1,8 +1,5 @@
 <template>
-  <v-app-bar app class="primary">
-    <v-app-bar-nav-icon v-if="isMenu" class="white--text"/>
-    <v-spacer/>
-    <v-menu select origin="center center" transition="scale-transition" inline absolute>
+  <v-menu select origin="center center" transition="scale-transition" inline absolute>
       <template v-slot:activator="{ on }">
         <v-btn text v-on="on" class="white--text">
           <country-flag :country="$t('flag')"/>
@@ -20,15 +17,14 @@
         </v-list-item>
       </v-list>
     </v-menu>
-  </v-app-bar>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
-  name: 'NavigationBar',
+  name: 'language',
   data () {
     return {
-      isMenu: false,
       languages: [
         {
           title: this.$t('languages.thai'),
@@ -41,15 +37,29 @@ export default {
       ]
     }
   },
+  computed: {
+    ...mapGetters({
+      getLanguage: 'language/getLanguage'
+    })
+  },
   methods: {
     changeLanguage (lang) {
-      this.$i18n.locale = lang.value
-      this.$store.dispatch('language/setLanguage', lang.value)
+      const selectLanguage = lang.value === 'us' ? 'en' : lang.value
+      //   if (lang.value === 'us') {
+      //     selectLanguage = 'en'
+      //   } else {
+      //     selectLanguage = lang.value
+      //   }
+      if (this.getLanguage !== selectLanguage) {
+        this.$i18n.locale = selectLanguage
+        this.$store.dispatch('language/setLanguage', selectLanguage)
+        this.$router.push({
+          params: {
+            lang: selectLanguage
+          }
+        })
+      }
     }
   }
 }
 </script>
-
-<style>
-
-</style>
