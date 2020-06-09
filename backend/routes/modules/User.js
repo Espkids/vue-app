@@ -64,7 +64,7 @@ route.post('/login', async (req, res, next) => {
     } else {
       bcrypt.compare(userData.password, result[0].password, (err, compareResult) => {
         if (err) {
-          res.send({status: false, msg: 'Fial to compare password', err: err})
+          res.send({status: false, msg: 'Fail to compare password', err: err})
         } else {
           if (compareResult) {
             res.send({status: true, msg: 'Login success', user: result[0]})
