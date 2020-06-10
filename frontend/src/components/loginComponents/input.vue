@@ -115,9 +115,18 @@ export default {
       // }
       axios.get('http://www.vdvclao.org/thongpong/c/action/simdatacdg2?pass=ati123&type=vehiclereg&division_no=0540022')
         .then(res => {
+          const objData = {}
           const data = res.data
-          const json = JSON.stringify(data)
-          console.log(json)
+          const arr = data.split('\r\n')
+          arr.forEach(element => {
+            const name = element.substring(0, element.indexOf(':'))
+            const value = element.substring(element.indexOf(':') + 1, element.length)
+            const obj = {
+              [name]: value
+            }
+            Object.assign(objData, obj)
+          })
+          console.log(objData)
         })
     },
     clearInput () {
