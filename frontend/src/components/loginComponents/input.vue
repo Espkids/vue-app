@@ -119,10 +119,10 @@ export default {
           const data = res.data
           const arr = data.split('\r\n')
           arr.forEach(element => {
-            const name = element.substring(0, element.indexOf(':'))
-            const value = element.substring(element.indexOf(':') + 1, element.length)
+            const fieldname = element.substring(0, element.indexOf(':'))
+            const value = element.substring(element.indexOf(':') + 1)
             const obj = {
-              [name]: value
+              [fieldname]: value
             }
             Object.assign(objData, obj)
           })
