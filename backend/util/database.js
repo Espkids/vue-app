@@ -16,6 +16,26 @@ const sequelize = new Sequelize(env.DB_DATABASE, env.DB_USER, env.DB_PASS, {
   }
 })
 
+sequelize.authenticate()
+  .then(() => {
+    console.log('Connection has been established successfully.')
+  })
+  .catch(err => {
+    console.error('Unable to connect to the database:', err)
+  })
+
+const disconnect =  (req, res, next) => {
+  sequelize.close()
+    .then(() => {
+      console.log('Close successfully.')
+      next()
+    })
+    .catch(err => {
+      console.error('Unable to close database:', err)
+      next()
+    })
+}
+
 const db = {}
 db.Sequelize = Sequelize
 db.sequelize = sequelize

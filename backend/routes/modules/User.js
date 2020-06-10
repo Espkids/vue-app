@@ -17,7 +17,7 @@ route.get('/:id', async (req, res, next) => {
     } else {
         data = await User.findByPk(id)
     }
-    sequelize.close()
+    disconnect()
     res.send(data)
   } catch (err) {
     res.send(err)
@@ -67,7 +67,7 @@ route.post('/login', async (req, res, next) => {
           res.send({status: false, msg: 'Fail to compare password', err: err})
         } else {
           if (compareResult) {
-            res.send({status: true, msg: 'Login success', user: result[0]})
+            res.status(401).send({status: true, msg: 'Login success', user: result[0]})
           } else {
             res.send({status: false, msg: 'Username or password incorrect'})
           }
