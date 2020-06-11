@@ -44,7 +44,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import axios from 'axios'
+import service from '../../services/userService'
 export default {
   name: 'InputComponent',
   data () {
@@ -87,38 +87,29 @@ export default {
     }
   },
   methods: {
-    submit () {
-      // this.clearError()
-      // if (this.username === '') {
-      //   this.error.username = this.ruleUsername
-      //   this.$vuetify.goTo('#usr', this.scrollOption)
-      // } else if (this.password === '') {
-      //   this.error.password = this.$t('rules.enterPassword')
-      //   this.$vuetify.goTo('#pass', this.scrollOption)
-      // } else {
-      //   const user = {
-      //     username: this.username,
-      //     password: this.password
-      //   }
-      //   this.$axios.post('/user/login', user)
-      //     .then(res => {
-      //       if (res.data.status) {
-      //         console.log(res.data)
-      //       } else {
-      //         this.isErrorLogin = true
-      //         this.clearInput()
-      //       }
-      //     })
-      //     .catch(err => {
-      //       console.log(err)
-      //     })
-      // }
-      axios.get('http://www.vdvclao.org/thongpong/c/action/simdatacdg2?pass=ati123&type=vehiclereg&division_no=0540022')
-        .then(res => {
-          const data = res.data
-          const json = JSON.stringify(data)
-          console.log(json)
-        })
+    async submit () {
+      this.clearError()
+      if (this.username === '') {
+        this.error.username = this.ruleUsername
+        this.$vuetify.goTo('#usr', this.scrollOption)
+      } else if (this.password === '') {
+        this.error.password = this.$t('rules.enterPassword')
+        this.$vuetify.goTo('#pass', this.scrollOption)
+      } else {
+        const user = {
+          username: this.username,
+          password: this.password
+        }
+        await service.login(user)
+          .then(result => {
+            console.log(result)
+          })
+          .catch(() => {
+            console.log('error rrrrrrrrrr')
+            this.isErrorLogin = true
+            this.clearInput()
+          })
+      }
     },
     clearInput () {
       this.username = ''
