@@ -6,12 +6,12 @@ export default {
       .then(response => response.data)
   },
   async login (credentials) {
-    const result = await axios.post('http://localhost:8000/api/user/login', credentials)
+    const result = await axios.post('http://localhost:8000/api/service/login', credentials)
       .then(res => {
-        return res.data.status
+        return res.data
       })
       .catch(err => {
-        return err
+        return err.response.status
       })
     return result
   }

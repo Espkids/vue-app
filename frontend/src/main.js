@@ -14,6 +14,7 @@ axios.defaults.baseURL = 'http://localhost:8000/api'
 Vue.prototype.$axios = axios
 
 router.beforeEach((to, from, next) => {
+  // console.log(to.name)
   let language = to.params.lang
   if (!language) {
     language = 'en'

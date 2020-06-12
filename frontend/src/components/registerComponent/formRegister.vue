@@ -8,18 +8,19 @@
       <v-card-text>
         <v-text-field
           v-model="form.name"
-          :rules="[ruleRequire]"
-          :success="!!form.name"
+          :rules="[rules.require]"
           :label="$t('register.name')"
           outlined/>
         <v-text-field
           v-model="form.username"
-          :rules="[ruleRequire, ruleSpace]"
+          ref="username"
+          id="username"
+          :rules="[rules.require, rules.space]"
           :label="$t('register.username')"
           outlined/>
         <v-text-field
           v-model="form.password"
-          :rules="[ruleRequire, ruleSpace]"
+          :rules="[rules.require, rules.space]"
           :label="$t('register.password')"
           :type="showPassword ? 'test' : 'password'"
           :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
@@ -27,7 +28,7 @@
           outlined/>
           <v-text-field
           v-model="confirmPassword"
-          :rules="[ruleRequire, ruleSpace, rulePasswordMatch]"
+          :rules="[rules.require, rules.space, rules.passwordMatch]"
           :label="$t('register.confirmPassword')"
           :type="showPassword ? 'test' : 'password'"
           :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
@@ -35,7 +36,9 @@
           outlined/>
       </v-card-text>
       <v-card-actions class="mx-3 mb-3">
-        <v-icon class="error--text" size="30" @click="goBack">mdi-arrow-left-circle</v-icon>
+        <router-link class="white--text" :to="{name: 'login'}">
+          <v-icon class="error--text" size="30">mdi-arrow-left-circle</v-icon>
+        </router-link>
         <v-spacer/>
         <v-btn class="success" @click="submit">{{ $t('register.confirm') }}</v-btn>
       </v-card-actions>
@@ -44,7 +47,6 @@
 </template>
 
 <script>
-// import axios from 'axios'
 import { mapGetters } from 'vuex'
 import userService from '../../services/userService'
 export default {
@@ -61,9 +63,7 @@ export default {
   watch: {
     getLanguage: {
       handler () {
-        console.log(this.getLanguage)
-        // this.vm.$forceUpdate()
-        // this.validate()
+        this.validate()
       },
       deep: true
     }
@@ -72,23 +72,19 @@ export default {
     ...mapGetters({
       getLanguage: 'language/getLanguage'
     }),
-    // currentLanguage () {
-    //   return this.$store.state.language.language
-    // },
-    ruleRequire () {
-      return value => !!value || this.$t('rules.require')
-    },
-    ruleSpace () {
-      return value => (value || '').indexOf(' ') < 0 || this.$t('rules.space')
-    },
-    rulePasswordMatch () {
-      return value => value === this.form.password || this.$t('rules.passwordmatch')
+    rules () {
+      return {
+        require: value => !!value || this.$t('rules.require'),
+        space: value => (value || '').indexOf(' ') < 0 || this.$t('rules.space'),
+        passwordMatch: value => value === this.form.password || this.$t('rules.passwordmatch')
+      }
     }
   },
   methods: {
     async submit () {
       if (this.isFormValid) {
         const credential = this.form
+        console.log(credential)
         const result = await userService.register(credential)
         console.log(result)
       } else {
@@ -103,12 +99,6 @@ export default {
     },
     resetValidation () {
       this.$refs.form.resetValidation()
-    },
-    goBack () {
-      this.$router.push({ name: 'login' })
-    },
-    async getData () {
-      console.log(this.getLanguage)
     }
   }
 }

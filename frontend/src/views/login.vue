@@ -1,13 +1,13 @@
 <template>
-  <inputComponent/>
+  <loginComponent/>
 </template>
 
 <script>
-import inputComponent from '../components/loginComponents/input'
+import loginComponent from '../components/loginComponents/formlogin'
 export default {
   name: 'Login',
   components: {
-    inputComponent
+    loginComponent
   }
 }
 </script>

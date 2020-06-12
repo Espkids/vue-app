@@ -17,7 +17,6 @@ route.get('/:id', async (req, res, next) => {
     } else {
         data = await User.findByPk(id)
     }
-    disconnect()
     res.send(data)
   } catch (err) {
     res.send(err)
@@ -47,32 +46,6 @@ route.post('/', async (req, res, next) => {
       })
     } else {
       res.send({status: false, msg : 'Username already in use.'})
-    }
-  })
-  .catch(err => {
-    res.send({status: false, msg: 'Fail to check username from DB', err: err})
-  })
-})
-
-// login
-route.post('/login', async (req, res, next) => {
-  const userData = req.body
-  await User.findAll({where: {username: userData.username}})
-  .then(result => {
-    if (result.length === 0) {
-      res.send({status: false, msg: 'Username or password incorrect'})
-    } else {
-      bcrypt.compare(userData.password, result[0].password, (err, compareResult) => {
-        if (err) {
-          res.send({status: false, msg: 'Fail to compare password', err: err})
-        } else {
-          if (compareResult) {
-            res.status(401).send({status: true, msg: 'Login success', user: result[0]})
-          } else {
-            res.send({status: false, msg: 'Username or password incorrect'})
-          }
-        }
-      })
     }
   })
   .catch(err => {
@@ -124,5 +97,11 @@ route.delete('/:id', async (req, res, next) => {
     res.send({ msg: 'select data to delete', code: 0})
   }
 })
+
+// get parameter from query --> http://localhost:8000/api/user/test/?search=asdsadsad
+// route.post('/test', async (req, res, next) => {
+//   const data = req.query
+//   res.send(data)
+// })
 
 module.exports = route

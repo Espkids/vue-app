@@ -36,7 +36,7 @@
       <v-row class="px-5">
         <router-link class="black--text" :to="{name: 'register'}">{{ $t('login.register') }}</router-link>
         <v-spacer></v-spacer>
-        <router-link class="black--text" :to="{name: 'register'}">{{ $t('login.forgetpassword') }}</router-link>
+        <router-link class="black--text" :to="{name: 'home'}">{{ $t('login.forgetpassword') }}</router-link>
       </v-row>
     </v-card>
   </v-form>
@@ -68,10 +68,10 @@ export default {
   watch: {
     getLanguage () {
       if (this.error.username !== '') {
-        this.error.username = this.ruleUsername
+        this.error.username = this.rules.username
       }
       if (this.error.password !== '') {
-        this.error.password = this.rulePassword
+        this.error.password = this.rules.password
       }
     }
   },
@@ -84,6 +84,12 @@ export default {
     },
     rulePassword () {
       return this.$t('rules.enterPassword')
+    },
+    rules () {
+      return {
+        username: this.$t('rules.enterUsername'),
+        password: this.$t('rules.enterPassword')
+      }
     }
   },
   methods: {
@@ -103,11 +109,6 @@ export default {
         await service.login(user)
           .then(result => {
             console.log(result)
-          })
-          .catch(() => {
-            console.log('error rrrrrrrrrr')
-            this.isErrorLogin = true
-            this.clearInput()
           })
       }
     },
