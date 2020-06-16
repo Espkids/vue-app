@@ -5,7 +5,7 @@ const supportedLanguages = Object.getOwnPropertyNames(Languages)
 export default {
   namespaced: true,
   state: {
-    language: 'us'
+    language: 'en'
   },
   getters: {
     getLanguage: state => {

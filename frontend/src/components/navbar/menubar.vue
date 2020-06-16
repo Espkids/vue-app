@@ -2,6 +2,8 @@
   <nav>
     <v-navigation-drawer
       app
+      mobile-breakpoint="991"
+      width="200"
       :permanent="isPermanent"
       v-model="drawer"
       color="#424242">
@@ -30,15 +32,15 @@ export default {
       }
     },
     $route () {
-      const routeName = this.$route.name
-      const pageName = ['login', 'register']
-      if (pageName.includes(routeName)) {
-        this.isPermanent = false
-      }
+      this.checkPage()
     }
   },
   created () {
+    this.checkPage()
     window.addEventListener('resize', this.onScreenChange)
+  },
+  beforeUpdate () {
+    this.checkPage()
   },
   destroyed () {
     window.removeEventListener('resize', this.onScreenChange)
@@ -54,11 +56,22 @@ export default {
         if (screenSize < 991) {
           this.isPermanent = false
         } else {
-          if (pageName.includes(routeName)) {
-            this.isPermanent = false
-          } else {
-            this.isPermanent = true
-          }
+          this.isPermanent = true
+        }
+      }
+    },
+    checkPage () {
+      const routeName = this.$route.name
+      const pageName = ['login', 'register']
+      const screenSize = window.innerWidth
+      if (pageName.includes(routeName)) {
+        this.drawer = false
+        this.isPermanent = false
+      } else {
+        if (screenSize < 991) {
+          this.isPermanent = false
+        } else {
+          this.isPermanent = true
         }
       }
     }

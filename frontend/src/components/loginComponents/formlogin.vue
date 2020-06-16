@@ -36,7 +36,7 @@
       <v-row class="px-5">
         <router-link class="black--text" :to="{name: 'register'}">{{ $t('login.register') }}</router-link>
         <v-spacer></v-spacer>
-        <router-link class="black--text" :to="{name: 'home'}">{{ $t('login.forgetpassword') }}</router-link>
+        <router-link class="black--text" :to="{name: 'home', params: {myProp: 'Eiei'}, query: { qq: 'qq' } }">{{ $t('login.forgetpassword') }}</router-link>
       </v-row>
     </v-card>
   </v-form>
@@ -106,10 +106,13 @@ export default {
           username: this.username,
           password: this.password
         }
-        await service.login(user)
-          .then(result => {
-            console.log(result)
-          })
+        const result = await service.login(user)
+        if (result.status) {
+          console.log(result)
+        } else {
+          this.isErrorLogin = true
+          this.clearInput()
+        }
       }
     },
     clearInput () {

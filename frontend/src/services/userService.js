@@ -11,7 +11,8 @@ export default {
         return res.data
       })
       .catch(err => {
-        return err.response.status
+        // err.response.status
+        return err
       })
     return result
   }

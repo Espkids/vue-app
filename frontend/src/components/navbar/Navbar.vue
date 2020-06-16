@@ -26,7 +26,6 @@ export default {
   },
   watch: {
     $route () {
-      console.log(this.$route.name)
       this.checkPage()
     }
   },
