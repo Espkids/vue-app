@@ -29,8 +29,12 @@ const routes = [
       {
         path: 'home',
         name: 'home',
-        props: false,
         component: () => import('../views/home.vue')
+      },
+      {
+        path: 'vdvc',
+        name: 'vdvc',
+        component: () => import('../views/getDatavdvc.vue')
       }
     ]
   }

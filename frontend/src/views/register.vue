@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import registerComponent from '../components/registerComponent/formRegister'
+import registerComponent from './registerComponent/formRegister'
 export default {
   components: {
     registerComponent
