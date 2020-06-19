@@ -1,6 +1,10 @@
 <template>
   <nav>
-    <v-app-bar app flat class="primary">
+    <v-app-bar
+      app
+      color="transparent"
+      flat
+      class="primary">
       <v-app-bar-nav-icon v-if="menuButton" @click="isMenu = !isMenu" class="white--text"/>
       <v-spacer/>
       <languageComponent />

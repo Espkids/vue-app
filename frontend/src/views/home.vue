@@ -1,5 +1,5 @@
 <template>
-  <v-card elevation="0">
+  <v-card elevation="0" height="1200">
     <v-card-title class="pa-1">
       <h6>{{ pageName }}</h6>
     </v-card-title>
