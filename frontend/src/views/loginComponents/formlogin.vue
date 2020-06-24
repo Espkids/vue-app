@@ -38,6 +38,7 @@
         <v-spacer></v-spacer>
         <router-link class="black--text" :to="{name: 'home', params: { myProp: 'Eiei' }, query: { qq: 'qq' } }">{{ $t('login.forgetpassword') }}</router-link>
       </v-row>
+      <router-link :to="{name: 'vdvc'}">vdvc</router-link>
     </v-card>
   </v-form>
 </template>
