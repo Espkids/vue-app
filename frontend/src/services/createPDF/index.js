@@ -1,9 +1,10 @@
 import pdfMake from 'pdfmake/build/pdfmake'
 import pdfFonts from 'pdfmake/build/vfs_fonts'
-
+import axios from 'axios'
 import getTitle from './titleContent'
 import getCar from './carContent'
 import getInspection from './inspectionContent'
+import getFooter from './footerContent'
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs
 
@@ -46,25 +47,56 @@ pdfMake.fonts = {
   }
 }
 
+// Upload to Spaces in DigitalOcean
+async function uploadToSpaces (blob) {
+  // Add file as blob
+  const pdfFile = new File([blob], await getFilename(), { type: 'pdf' })
+  // Create new formData
+  const formData = new FormData()
+  // Add pdf data to array of formData
+  formData.append('file', pdfFile)
+  axios.post('/upload', formData, {
+    baseURL: 'http://localhost:5000'
+  })
+    .then(res => {
+      console.log(res)
+    })
+    .catch(err => {
+      console.log(err)
+    })
+}
+
+async function getFilename () {
+  const time = new Date()
+  const currentTime = await time.toLocaleString()
+  const arrTime = await currentTime.split(' ')
+  const date = await arrTime[0].split('/')
+  return `InspectionReport-${date[0]}-${date[1]}-${date[2]}_${arrTime[1]}.pdf`
+}
+
 export default {
-  createPDF () {
+  async createPDF () {
     const docDefinition = {
-      pageMargins: [30, 40, 30, 30], // margin: [Left, Top, Right, bottom]
+      pageMargins: [30, 20, 30, 20], // margin: [Left, Top, Right, bottom]
       pageSize: 'A4',
       content: [
-        getTitle.titleContent(),
-        getCar.carContent(),
-        getInspection.inspectionContent()
+        await getTitle.titleContent(),
+        await getCar.carContent(),
+        await getInspection.inspectionContent(),
+        await getFooter.footerContent()
       ],
       defaultStyle: {
         font: 'LaoRajbandith'
       }
     }
-    const pdfDocGenerator = pdfMake.createPdf(docDefinition)
-    pdfDocGenerator.open()
+    const pdfDocGenerator = await pdfMake.createPdf(docDefinition)
+    // pdfDocGenerator.download('pdfReport.pdf')
     // pdfDocGenerator.download('testPDF.pdf')
-    pdfDocGenerator.getBlob((blob) => {
-      console.log(blob)
+    // Get PDF as blob for upload to server files store
+    console.log(pdfDocGenerator)
+    await pdfDocGenerator.getBlob(blob => {
+      // console.log(blob)
+      uploadToSpaces(blob)
     })
   }
 }
