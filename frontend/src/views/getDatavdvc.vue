@@ -120,8 +120,10 @@ export default {
           console.log(err)
         })
     },
-    generatePDF () {
-      service.createPDF()
+    async generatePDF () {
+      const result = await service.createPDF()
+      console.log(result)
+      // result.open()
     }
   }
 }
