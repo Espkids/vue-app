@@ -33,14 +33,14 @@ route.post('/', function (request, response, next) {
     upload(request, response, function (error) {
         if (error) {
             console.log(error)
+            response.status(500).json({ message: 'Server cannot save the file, please wait and try again later.', error: error })
         } else {
             console.log('File has uploaded')
             const fileURL = `${spacesEndpoint.protocol}//photoims.${spacesEndpoint.host}/photoims/${fileName}`
-            response.send(fileURL)
+            response.send({ fileUrl: fileURL, fileName: fileName })
         }
     })
-    // response.status(401).json({ msg: 'This content is for member please login and try again.' })
-    // response.send('fasfsafafasfafasfs')
+    // response.status(500).json({ message: 'Server crash please wait and try again later.' })
 })
 
 module.exports = route

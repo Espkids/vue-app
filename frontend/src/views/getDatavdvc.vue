@@ -121,9 +121,15 @@ export default {
         })
     },
     async generatePDF () {
-      const result = await service.createPDF()
-      console.log(result)
-      // result.open()
+      await service.createPDF()
+        .then(res => {
+          console.log(`Upload success\nFilename -> ${res.fileName}`)
+          window.open(res.fileUrl)
+        }).catch(err => {
+          // console.log(err)
+          console.log(`Error code: ${err.response.status}. ${err.response.statusText}\nMessage: ${err.response.data.message}`)
+          console.log(`Description: \n${err.response.data.error.code}`)
+        })
     }
   }
 }

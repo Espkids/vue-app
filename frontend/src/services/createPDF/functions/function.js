@@ -1,5 +1,5 @@
 import axios from 'axios'
-
+// function get current time to show in PDF
 function getTime () {
   const date = new Date()
   const timeString = date.toLocaleString()
@@ -10,7 +10,8 @@ function getTime () {
   const time = timeArr[1].substr(0, 5)
   return `${day.substr(-2)}/${month.substr(-2)}/${year} ${time}`
 }
-
+// function return value of Inspection
+// if pass return O, not pass return X in uppercase
 function getValue (value) {
   return value ? 'O' : 'X'
 }
@@ -23,15 +24,11 @@ async function uploadToSpaces (blob) {
   const formData = new FormData()
   // Add pdf data to array of formData
   formData.append('file', pdfFile)
-  const result = await axios.post('/uploadPDF/', formData, {
-    baseURL: 'http://localhost:8000/api'
-  })
+  const result = await axios.post('/uploadPDF/', formData, { baseURL: 'http://localhost:8000/api' })
     .then(res => {
-      window.open(res.data)
-      return res
+      return res.data
     })
     .catch(err => {
-      console.log(err)
       return err
     })
   return result

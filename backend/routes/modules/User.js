@@ -1,57 +1,16 @@
 // import lib
 const express = require('express')
-const db = require('../../util/database')
-// define variable
-const sequelize = db.sequelize
-const User = db.user
 const route = express.Router()
-const bcrypt = require('bcrypt')
 
-// get data
-route.get('/:id', async (req, res, next) => {
-  try {
-    const id = Number(req.params.id)
-    let data = {}
-    if (id === -1) {
-        data = await User.findAll()
-    } else {
-        data = await User.findByPk(id)
-    }
-    res.send(data)
-  } catch (err) {
-    res.send(err)
-  }
-})
+const user = require('../../controller/User')
+
+// get all user
+route.get('/', user.findAll)
+// get user by id
+route.get('/:id', user.findOne)
 
 //create row
-route.post('/', async (req, res, next) => {
-  const userData = req.body
-  await User.findAll({where: {username: userData.username}})
-  .then(result => {
-    if (result.length === 0) {
-      bcrypt.hash(userData.password, 10, (err, hashPassword) => {
-        if (err) {
-          res.send({status: false, msg: 'Generate hash wrong! Try again later.'})
-        } else {
-          // console.log(hashPassword)
-          userData.password = hashPassword
-          User.create(userData)
-            .then(result => {
-              res.send({status: true, msg: 'Create user seccuss.', item: result})
-            })
-            .catch(err => {
-              res.send({status: false, msg: 'Create user fail.', err: err})
-            })
-        }
-      })
-    } else {
-      res.send({status: false, msg : 'Username already in use.'})
-    }
-  })
-  .catch(err => {
-    res.send({status: false, msg: 'Fail to check username from DB', err: err})
-  })
-})
+route.post('/', user.create)
 
 //update row
 route.put('/:id', async (req, res, next) => {

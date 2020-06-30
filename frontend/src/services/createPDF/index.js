@@ -8,7 +8,7 @@ import getFooter from './inspectionContents/footerContent'
 
 // Import test json data
 import data from './mocData.json'
-// const func = require('./functions/function')
+const func = require('./functions/function')
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs
 
@@ -51,12 +51,6 @@ pdfMake.fonts = {
   }
 }
 
-// const blobValue = []
-// function initialData (data) {
-//   console.log(data)
-//   blobValue.push(data)
-// }
-
 export default {
   async createPDF () {
     const docDefinition = {
@@ -78,10 +72,22 @@ export default {
     // pdfDocGenerator.print({}, window)
 
     // Get PDF as blob for upload to server files store
-    // await pdfDocGenerator.getBlob(blob => {
-    //   initialData(blob)
-    // })
-    // const result = await func.uploadToSpaces(blobValue[0])
-    return pdfDocGenerator
+    const promise = new Promise((resolve, reject) => {
+      pdfDocGenerator.getBlob(async (blob) => {
+        const result = await func.uploadToSpaces(blob)
+        if (result.response) {
+          reject(result)
+        } else {
+          resolve(result)
+        }
+      })
+    })
+    // console.log('waiting for callback function')
+    // const result = promise // Do something when callback done
+    //   .then(res => {
+    //     console.log('finished waiting')
+    //     return res
+    //   })
+    return promise
   }
 }

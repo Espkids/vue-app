@@ -24,17 +24,17 @@ sequelize.authenticate()
     console.error('Unable to connect to the database:', err)
   })
 
-const disconnect =  (req, res, next) => {
-  sequelize.close()
-    .then(() => {
-      console.log('Close successfully.')
-      next()
-    })
-    .catch(err => {
-      console.error('Unable to close database:', err)
-      next()
-    })
-}
+// const disconnect =  (req, res, next) => {
+//   sequelize.close()
+//     .then(() => {
+//       console.log('Close successfully.')
+//       next()
+//     })
+//     .catch(err => {
+//       console.error('Unable to close database:', err)
+//       next()
+//     })
+// }
 
 const db = {}
 db.Sequelize = Sequelize
