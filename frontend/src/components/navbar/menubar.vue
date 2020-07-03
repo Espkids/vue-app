@@ -2,11 +2,12 @@
   <nav>
     <v-navigation-drawer
       app
+      src="../../assets/menu-background-edit.jpg"
+      dark
       mobile-breakpoint="991"
       width="200"
       :permanent="isPermanent"
-      v-model="drawer"
-      color="#424242">
+      v-model="drawer">
       <v-icon>mdi-account-circle</v-icon>
     </v-navigation-drawer>
   </nav>

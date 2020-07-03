@@ -2,9 +2,8 @@
   <nav>
     <v-app-bar
       app
-      color="transparent"
-      flat
-      class="primary">
+      color="#113263"
+      flat>
       <v-app-bar-nav-icon v-if="menuButton" @click="isMenu = !isMenu" class="white--text"/>
       <v-spacer/>
       <languageComponent />

@@ -38,8 +38,11 @@ async function getFilename () {
   const time = await new Date()
   const currentTime = await time.toLocaleString()
   const arrTime = await currentTime.split(' ')
-  const date = await arrTime[0].split('/')
-  return `InspectionReport-${date[0]}-${date[1]}-${date[2]}_${arrTime[1]}.pdf`
+  const arrDate = await arrTime[0].split('/')
+  const date = '0' + arrDate[0]
+  const month = '0' + arrDate[1]
+  const year = arrDate[2]
+  return `InspectionReport-${date.substr(-2)}-${month.substr(-2)}-${year}_${arrTime[1]}.pdf`
 }
 
 // module.exports = {

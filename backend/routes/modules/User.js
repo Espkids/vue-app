@@ -2,10 +2,11 @@
 const express = require('express')
 const route = express.Router()
 
-const user = require('../../controller/User')
+const user = require('../../controllers/User')
 
 // get all user
 route.get('/', user.findAll)
+
 // get user by id
 route.get('/:id', user.findOne)
 
