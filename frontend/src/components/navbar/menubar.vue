@@ -4,7 +4,6 @@
       app
       src="../../assets/menu-background-edit.jpg"
       dark
-      mobile-breakpoint="991"
       width="200"
       :permanent="isPermanent"
       v-model="drawer">

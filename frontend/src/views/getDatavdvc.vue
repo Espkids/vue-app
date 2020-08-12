@@ -19,13 +19,13 @@
         ></v-text-field>
       </v-card-text>
       <v-card-actions>
-        <v-btn block color="primary" @click="getDataVDVC">Get data from VDVC</v-btn>
+        <v-btn disabled block color="primary" @click="getDataVDVC">Get data from VDVC</v-btn>
       </v-card-actions>
     </v-card>
 
     <v-card width="600" class="mx-auto mt-6" elevation="5">
       <v-card-actions>
-        <v-btn block color="success" @click="generatePDF">Generate PDF</v-btn>
+        <v-btn disabled block color="success" @click="generatePDF">Generate PDF</v-btn>
       </v-card-actions>
     </v-card>
 
@@ -63,7 +63,21 @@ export default {
         })
     },
     async getDataAccess () {
-      // awaSit service.access.getData()
+      // await service.access.getData()
+      const ADODB = require('node-adodb')
+      const path = require('path')
+      const a = 'Provider=Microsoft.Jet.OLEDB.4.0;'
+      const b = 'Data Source=SuperABS;'
+      const c = 'Persist Security Info=False;'
+      const e = path.join(a, b, c)
+      const connection = ADODB.open(e)
+      connection.execute('SELECT * FROM TableCarData')
+        .then(data => {
+          console.log(data)
+        })
+        .catch(error => {
+          console.error(error)
+        })
     }
   }
 }

@@ -8,8 +8,8 @@ var fileName = null
 const spacesEndpoint = new aws.Endpoint('sgp1.digitaloceanspaces.com')
 const spaces = new aws.S3({
     endpoint: spacesEndpoint,
-    accessKeyId: 'AEYWLMXU4Z2L6FSOMNPC',
-    secretAccessKey: 'AdbP2wQdI4jnIysBRMyuC5V9I+yOtFZambzpnFaAm0o'
+    accessKeyId: 'SPN2B7MCT5SSCCJZ64SJ',
+    secretAccessKey: 'jYDjALUsRBXWHap4e35CS/CD2AKMeJweIu1FWmqe8DA'
     // access และ secret key ได้จากการสร้างโดยกด manage keys เมื่อสร้างแล้ว
     // ซักพัก secret จะไม่แสดงถ้าลืมต้องกด regenarate key หรือสร้างใหม่
 })
